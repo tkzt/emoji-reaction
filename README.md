@@ -34,6 +34,7 @@ npm install emoji-reaction
             reactor="who-react"
             lcAppId="leancloud-app-id"
             lcAppKey="leancloud-app-key"
+            :emojis="['👍', '👎', '😄', '🎉', '😕', '❤️', '🚀', '👀']"
         />
     </div>
 </template>
