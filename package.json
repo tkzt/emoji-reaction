@@ -1,6 +1,6 @@
 {
   "name": "emoji-reaction",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A vue emoji reaction component",
   "main": "lib/emoji-reaction.js",
   "typings": "lib/index.d.ts",
@@ -13,7 +13,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "lint": "vue-cli-service lint",
-    "build": "yarn build:clean && yarn build:esm",
+    "build": "vue-cli-service build",
     "build:lib": "yarn build:clean && yarn build:esm",
     "build:clean": "rimraf lib/*",
     "build:esm": "rollup --config ./build/rollup.config.js"
