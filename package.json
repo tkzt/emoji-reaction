@@ -1,6 +1,6 @@
 {
   "name": "emoji-reaction",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A vue emoji reaction component",
   "main": "lib/emoji-reaction.js",
   "typings": "lib/index.d.ts",
@@ -61,5 +61,6 @@
     "url": "https://github.com/boring-plans/emoji-reaction/issues"
   },
   "homepage": "https://github.com/boring-plans/emoji-reaction#readme",
-  "license": "MIT"
+  "license": "MIT",
+  "keywords": ["emoji", "reaction", "vue3"]
 }

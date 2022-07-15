@@ -14,4 +14,5 @@ module.exports = defineConfig({
       filename: 'index.html',
     },
   },
+  publicPath: '/emoji-reaction',
 });
