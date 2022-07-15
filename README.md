@@ -1,7 +1,7 @@
 
 # Emoji Reaction
 
-`Emoji Reaction` a vue emoji reaction component based on [Leancloud](https://www.leancloud.cn/) and [Vue3](https://vuejs.org/).
+`Emoji Reaction` is an emoji reaction component based on [Leancloud](https://www.leancloud.cn/) and [Vue3](https://vuejs.org/).
 
 ![App Screenshot](https://tkzt.cn/emoji-reaction/Snipaste_2022-07-15_14-42-05.png)
 
