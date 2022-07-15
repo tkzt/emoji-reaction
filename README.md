@@ -13,7 +13,7 @@
 
 ## Before Everything
 
-- An Vue3 project
+- A Vue3 project
 - A Leancloud App (For more, visit [here](https://github.com/boring-plans/boring-days#%E6%B3%A8%E5%86%8C))
 ## Installation
 
