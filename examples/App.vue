@@ -1,27 +1,30 @@
 <template>
   <div id="app">
     <div class="container">
-            <div class="col" v-for="i in 5" :key="i">
-                <div class="card">
-                    <div class="card-title">
-                        Card {{i}}
-                    </div>
-                    <div class="card-description">
-                      Lorem ipsum dolor,
-                      sit amet consectetur adipisicing elit. Sequi repellat minus omnis illum,
-                      cum temporibus amet recusandae voluptatem?
-                      Excepturi ipsa labore soluta doloribus quod
-                      molestiae incidunt reiciendis voluptatibus iste fuga.
-                    </div>
-                    <emoji-reaction
-                      :reactTo="'card-'+i"
-                      :reactor="reactor"
-                      lcAppId="ocLQI6JRaaujbK1uOEhqwMMy-MdYXbMMI"
-                      lcAppKey="U65o7Va32y6dWshUhJHWrtUe"
-                    />
+        <div class="col" v-for="i in 5" :key="i">
+            <div class="card">
+                <div class="card-title">
+                    Card {{i}}
                 </div>
+                <div class="card-description">
+                    Lorem ipsum dolor,
+                    sit amet consectetur adipisicing elit. Sequi repellat minus omnis illum,
+                    cum temporibus amet recusandae voluptatem?
+                    Excepturi ipsa labore soluta doloribus quod
+                    molestiae incidunt reiciendis voluptatibus iste fuga.
+                </div>
+                <emoji-reaction
+                    :reactTo="'card-'+i"
+                    :reactor="reactor"
+                    lcAppId="ocLQI6JRaaujbK1uOEhqwMMy-MdYXbMMI"
+                    lcAppKey="U65o7Va32y6dWshUhJHWrtUe"
+                />
             </div>
         </div>
+    </div>
+    <div class="footer">
+        &copy; {{new Date().getFullYear()}} Allen Tao
+    </div>
   </div>
 </template>
 
@@ -43,6 +46,7 @@ body {
     width: 100vw;
     min-height: 100vh;
     display: flex;
+    flex-wrap: wrap;
 }
 
 .container {
@@ -87,6 +91,19 @@ body {
     margin: 8px 0;
 }
 
+.footer {
+    position: fixed;
+    bottom: 0;
+    padding: 24px;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: xx-small;
+    color: rgba(0, 0, 0, .6);
+}
+
 @media screen and (min-width: 1400px) {
     .container {
         width: 60%;
@@ -102,6 +119,10 @@ body {
 @media screen and (max-width: 600px) {
     .col {
       flex-basis: 100%;
+    }
+
+    .footer {
+        position: relative;
     }
 }
 </style>
