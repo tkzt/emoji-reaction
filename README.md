@@ -1,12 +1,10 @@
 <p align="center">
     <img width="180" src="https://tkzt.cn/emoji-reaction/logo.svg" alt="Emoji Reaction logo" />
 </p>
-<br/>
 <p align="center">
   <a href="https://npmjs.com/package/emoji-reaction"><img src="https://badgen.net/npm/v/emoji-reaction" alt="npm package"></a>
   <a href="https://github.com/boring-plans/emoji-reaction/actions/workflows/cd.yml?query=branch%3Amain"><img src="https://img.shields.io/github/workflow/status/boring-plans/emoji-reaction/cd/main" alt="build status"></a>
 </p>
-<br/>
 
 # Emoji Reaction
 
@@ -49,7 +47,7 @@ npm install emoji-reaction
 </template>
 <script lang="ts" setup>
 import { EmojiReaction } from 'emoji-reaction';
-import 'emoji-reaction/lib/emoji-reaction.css';
+import 'emoji-reaction/lib/index.css';
 </script>
 ```
 
@@ -59,7 +57,7 @@ Or globally register:
 import { createApp } from 'vue';
 import App from './App.vue';
 import EmojiReaction from 'emoji-reaction';
-import 'emoji-reaction/lib/emoji-reaction.css';
+import 'emoji-reaction/lib/index.css';
 
 createApp(App).use(EmojiReaction).mount('#app');
 ```
