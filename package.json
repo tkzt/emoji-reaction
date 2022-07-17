@@ -1,12 +1,11 @@
 {
   "name": "emoji-reaction",
-  "version": "1.0.5",
+  "version": "1.0.7",
   "description": "A vue emoji reaction component",
-  "main": "lib/emoji-reaction.js",
+  "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
     "lib",
-    "styles",
     "package.json",
     "README.md"
   ],
@@ -14,9 +13,9 @@
     "serve": "vue-cli-service serve",
     "lint": "vue-cli-service lint",
     "build": "vue-cli-service build",
-    "build:lib": "yarn build:clean && yarn build:esm",
+    "build:lib": "yarn build:clean && yarn build:rollup",
     "build:clean": "rimraf lib/*",
-    "build:esm": "rollup --config ./build/rollup.config.js"
+    "build:rollup": "rollup -c"
   },
   "dependencies": {
     "leancloud-storage": "^4.13.0",
@@ -37,6 +36,7 @@
     "@vue/cli-service": "~5.0.0",
     "@vue/eslint-config-airbnb": "^6.0.0",
     "@vue/eslint-config-typescript": "^9.1.0",
+    "autoprefixer": "^10.4.7",
     "core-js": "^3.8.3",
     "device-uuid": "^1.0.4",
     "eslint": "^7.32.0",
@@ -44,7 +44,7 @@
     "eslint-plugin-vue": "^8.0.3",
     "eslint-plugin-vuejs-accessibility": "^1.1.0",
     "rollup": "^2.76.0",
-    "rollup-plugin-scss": "^3.0.0",
+    "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.32.1",
     "rollup-plugin-vue": "^6.0.0",
@@ -62,5 +62,9 @@
   },
   "homepage": "https://github.com/boring-plans/emoji-reaction#readme",
   "license": "MIT",
-  "keywords": ["emoji", "reaction", "vue3"]
+  "keywords": [
+    "emoji",
+    "reaction",
+    "vue3"
+  ]
 }
