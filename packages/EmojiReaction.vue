@@ -9,29 +9,27 @@
     </div>
     <div class="er-pop-up" v-if="popUp">
         <template v-for="(item, index) in emojis" >
-          <progress-circular
-            v-if="loading.includes(POPUP_PREFIX+item)"
-            style="margin: 5px"
+          <div
+            class="er-pop-up-item reacted"
+            v-if="checkReacted(item)"
+            @click.stop="unreact(POPUP_PREFIX+item)"
+            :key="'reacted-'+index"
+          >
+            {{item}}
+          </div>
+          <div
+            class="er-pop-up-item"
+            v-else
+            @click.stop="react(POPUP_PREFIX+item)"
             :key="index"
-          />
-          <template v-else>
-            <div
-              class="er-pop-up-item reacted"
-              v-if="checkReacted(item)"
-              @click.stop="unreact(POPUP_PREFIX+item)"
-              :key="'reacted-'+index"
+          >
+            <span
+              class="er-pop-up-item-emoji"
+              :class="{loading: loading.includes(POPUP_PREFIX+item)}"
             >
               {{item}}
-            </div>
-            <div
-              class="er-pop-up-item"
-              v-else
-              @click.stop="react(POPUP_PREFIX+item)"
-              :key="index"
-            >
-              {{item}}
-            </div>
-          </template>
+            </span>
+          </div>
         </template>
     </div>
     <div class="er-reactions">
@@ -42,14 +40,10 @@
           class="er-reaction reacted"
           @click="unreact(reaction)"
         >
-          <progress-circular
-            style="margin: 4px; margin-right: 0;"
-            v-if="loading.includes(reaction)"
-          />
-          <template v-else>
-            <span class="er-reaction-emoji" >{{reaction}}</span>
-            <span class="er-reaction-sum">{{formatSum(reactors.length)}}</span>
-          </template>
+          <span
+            class="er-reaction-emoji"
+          >{{reaction}}</span>
+          <span class="er-reaction-sum">{{formatSum(reactors.length)}}</span>
         </div>
         <div
           v-else
@@ -57,14 +51,11 @@
           class="er-reaction"
           @click="react(reaction)"
         >
-          <progress-circular
-            style="margin: 4px; margin-right: 0;"
-            v-if="loading.includes(reaction)"
-          />
-          <template v-else>
-            <span class="er-reaction-emoji" >{{reaction}}</span>
-            <span class="er-reaction-sum">{{formatSum(reactors.length)}}</span>
-          </template>
+          <span
+            class="er-reaction-emoji"
+            :class="{loading: loading.includes(reaction)}"
+          >{{reaction}}</span>
+          <span class="er-reaction-sum">{{formatSum(reactors.length)}}</span>
         </div>
       </template>
     </div>
@@ -75,7 +66,7 @@
 import {
   ref, onMounted, onBeforeUnmount, Ref,
 } from 'vue';
-import Leancloud from 'leancloud-storage';
+import * as Leancloud from 'leancloud-storage';
 import { v4 as uuidv4 } from 'uuid';
 import ProgressCircular from './ProgressCircular.vue';
 
@@ -189,13 +180,13 @@ async function react(reaction: string) {
       reactionObj.set('reactTo', props.reactTo);
       await reactionObj.save();
 
-      loading.value = loading.value.filter((l) => l !== reaction);
-
-      if (popUp.value) {
-        popUp.value = false;
-      }
-
-      afterReact(pureReaction);
+      setTimeout(() => {
+        loading.value = loading.value.filter((l) => l !== reaction);
+        if (popUp.value) {
+          popUp.value = false;
+        }
+        afterReact(pureReaction);
+      }, 370);
     } catch (err) {
       const message = `Failed to react to ${props.reactTo}.\n${err}`;
       console.error(message);
@@ -207,19 +198,14 @@ async function react(reaction: string) {
 async function unreact(reaction: string) {
   if (!loading.value.includes(reaction)) {
     try {
-      loading.value.push(reaction);
-
       const pureReaction = reaction.replace(POPUP_PREFIX, '');
+      afterUnreact(pureReaction);
       const query = new Leancloud.Query('Reaction');
       await query.equalTo('reaction', pureReaction).equalTo('reactor', props.reactor).equalTo('reactTo', props.reactTo).destroyAll();
-
-      loading.value = loading.value.filter((l) => l !== reaction);
 
       if (popUp.value) {
         popUp.value = false;
       }
-
-      afterUnreact(pureReaction);
     } catch (err) {
       const message = `Failed to unreact to ${props.reactTo}.\n${err}`;
       console.error(message);
@@ -360,6 +346,11 @@ onBeforeUnmount(() => {
   background-color: var(--er-primary);
 }
 
+.er-reaction-emoji.loading,
+.er-pop-up-item-emoji.loading {
+  animation: loading .62s ease-in-out;
+}
+
 @keyframes pop-up {
   from {
     width: 0;
@@ -372,7 +363,19 @@ onBeforeUnmount(() => {
     bottom: 28px;
   }
 }
+
+@keyframes loading {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.37) rotate(-37deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
 </style>
 <style>
-@import "../styles/index.css";
+@import "index.css";
 </style>
