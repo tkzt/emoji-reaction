@@ -351,6 +351,10 @@ onBeforeUnmount(() => {
   animation: loading .62s ease-in-out;
 }
 
+.er-pop-up-item, .er-reaction {
+  user-select: none;
+}
+
 @keyframes pop-up {
   from {
     width: 0;
