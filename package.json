@@ -1,13 +1,12 @@
 {
   "name": "emoji-reaction",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "A vue emoji reaction component",
   "main": "lib/index.js",
   "module": "lib/index.esm.js",
   "typings": "lib/index.d.ts",
   "files": [
     "lib",
-    "styles",
     "package.json",
     "README.md"
   ],

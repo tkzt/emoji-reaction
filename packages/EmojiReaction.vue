@@ -381,5 +381,9 @@ onBeforeUnmount(() => {
 }
 </style>
 <style>
-@import "../styles/index.css";
+:root {
+    --er-primary:#5E35B137;
+    --er-primary-light:#5E35B125;
+    --er-primary-dark:#5E35B1a6;
+}
 </style>

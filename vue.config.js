@@ -1,10 +1,11 @@
 const { defineConfig } = require('@vue/cli-service');
+const path = require('path');
 
 module.exports = defineConfig({
   transpileDependencies: true,
   chainWebpack: (config) => {
     config.resolve.alias
-      .set('~', __dirname);
+      .set('~', path.resolve(__dirname, 'packages'));
   },
   pages: {
     index: {
