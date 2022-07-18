@@ -1,4 +1,4 @@
-import { nodeResolve } from '@rollup/plugin-node-resolve';
+import resolve from '@rollup/plugin-node-resolve';
 import { terser } from 'rollup-plugin-terser';
 import path from 'path';
 import autoprefixer from 'autoprefixer';
@@ -15,11 +15,22 @@ export default [
     output: [
       {
         format: 'es',
+        file: pkg.module,
+      },
+      {
+        name: 'EmojiReaction',
+        format: 'umd',
         file: pkg.main,
+        exports: 'named',
+        globals: {
+          vue: 'Vue',
+          'leancloud-storage': 'AV',
+          uuid: 'uuid',
+        },
       },
     ],
     plugins: [
-      nodeResolve(),
+      resolve(),
       vue(),
       typescript({
         tsconfigOverride: {
@@ -38,8 +49,8 @@ export default [
       }),
       postcss({
         plugins: [autoprefixer],
-        // inject: true,
-        extract: true,
+        inject: true,
+        // extract: true,
         minimize: true,
         sourceMap: false,
         extensions: ['.css'],

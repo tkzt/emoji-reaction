@@ -38,17 +38,16 @@ npm install emoji-reaction
 <template>
     <div class="card">
         <emoji-reaction
-            reactTo="whom-to-react-to"
+            react-to="whom-to-react-to"
             reactor="who-react"
-            lcAppId="leancloud-app-id"
-            lcAppKey="leancloud-app-key"
+            lc-app-id="leancloud-app-id"
+            lc-app-key="leancloud-app-key"
             :emojis="['👍', '👎', '😄', '🎉', '😕', '❤️', '🚀', '👀']"
         />
     </div>
 </template>
 <script lang="ts" setup>
 import { EmojiReaction } from 'emoji-reaction';
-import 'emoji-reaction/lib/index.css';
 </script>
 ```
 
@@ -58,10 +57,17 @@ Or globally register:
 import { createApp } from 'vue';
 import App from './App.vue';
 import EmojiReaction from 'emoji-reaction';
-import 'emoji-reaction/lib/index.css';
 
 createApp(App).use(EmojiReaction).mount('#app');
 ```
+
+Or a cdn-way to import:
+
+```
+<script src="https://cdn.jsdelivr.net/npm/emoji-reaction@1.0.10/lib/index.min.js"></script>
+```
+
+For details, check [this](https://github.com/boring-plans/boring-plans.github.io) out.
 
 
 ## Customization
