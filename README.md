@@ -2,8 +2,8 @@
     <img width="180" src="https://tkzt.cn/emoji-reaction/logo.svg" alt="Emoji Reaction logo" />
 </p>
 <p align="center">
-  <a href="https://github.com/boring-plans/emoji-reaction/blob/main/LICENSE"><img alt="GitHub" src="https://img.shields.io/github/license/boring-plans/emoji-reaction?color=royalblue"></a>
-  <a href="https://npmjs.com/package/emoji-reaction"><img src="https://badgen.net/npm/v/emoji-reaction" alt="npm package"></a>
+  <a href="https://github.com/boring-plans/emoji-reaction/blob/main/LICENSE"><img alt="GitHub License" src="https://img.shields.io/github/license/boring-plans/emoji-reaction?color=blue"></a>
+  <a href="https://npmjs.com/package/emoji-reaction"><img alt="npm package" src="https://img.shields.io/npm/v/emoji-reaction?color=royalblue"></a>
   <a href="https://github.com/boring-plans/emoji-reaction/actions/workflows/cd.yml?query=branch%3Amain"><img src="https://img.shields.io/github/workflow/status/boring-plans/emoji-reaction/cd/main" alt="build status"></a>
 </p>
 
