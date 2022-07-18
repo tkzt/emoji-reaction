@@ -66,7 +66,7 @@
 import {
   ref, onMounted, onBeforeUnmount, Ref,
 } from 'vue';
-import * as AV from 'leancloud-storage';
+import * as Leancloud from 'leancloud-storage';
 import { v4 as uuidv4 } from 'uuid';
 import ProgressCircular from './ProgressCircular.vue';
 
@@ -126,7 +126,7 @@ function clickOutside(ev: MouseEvent) {
 
 async function getReactions() {
   loading.value.push('all');
-  const query = new AV.Query('Reaction');
+  const query = new Leancloud.Query('Reaction');
   reactions.value = (await query.equalTo('reactTo', props.reactTo).find()).reduce((pre: Reaction[], curr) => {
     const { reaction, reactor } = curr.toJSON() as { reaction: string, reactor: string};
     const existedReaction = pre.find((p) => p.reaction === reaction);
@@ -174,7 +174,7 @@ async function react(reaction: string) {
       loading.value.push(reaction);
 
       const pureReaction = reaction.replace(POPUP_PREFIX, '');
-      const reactionObj = new AV.Object('Reaction');
+      const reactionObj = new Leancloud.Object('Reaction');
       reactionObj.set('reaction', pureReaction);
       reactionObj.set('reactor', props.reactor);
       reactionObj.set('reactTo', props.reactTo);
@@ -200,7 +200,7 @@ async function unreact(reaction: string) {
     try {
       const pureReaction = reaction.replace(POPUP_PREFIX, '');
       afterUnreact(pureReaction);
-      const query = new AV.Query('Reaction');
+      const query = new Leancloud.Query('Reaction');
       await query.equalTo('reaction', pureReaction).equalTo('reactor', props.reactor).equalTo('reactTo', props.reactTo).destroyAll();
 
       if (popUp.value) {
@@ -219,8 +219,8 @@ function checkReacted(reaction: string) {
 }
 
 onMounted(() => {
-  if (!AV.applicationId) {
-    AV.init({
+  if (!Leancloud.applicationId) {
+    Leancloud.init({
       appId: props.lcAppId,
       appKey: props.lcAppKey,
     });
