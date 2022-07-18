@@ -67,7 +67,7 @@ Or a cdn-way to import:
 <script src="https://cdn.jsdelivr.net/npm/emoji-reaction@1.0.10/lib/index.min.js"></script>
 ```
 
-For details, check [this](https://github.com/boring-plans/boring-plans.github.io) out.
+For details, check [this](https://github.com/boring-plans/boring-plans.github.io/blob/main/index.html) out.
 
 
 ## Customization
