@@ -248,6 +248,9 @@ onBeforeUnmount(() => {
   position: relative;
   cursor: pointer;
   display: flex;
+  height: 20px;
+  width: 20px;
+  justify-content: center;
   align-items: center;
 }
 

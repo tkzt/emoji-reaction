@@ -1,4 +1,4 @@
-name: Github Pages Deploy
+name: NPM Package Release
 
 on: [push, pull_request]
 
@@ -21,13 +21,12 @@ jobs:
           node-version: ${{ matrix.node }}
 
       - name: Install dependencies
-        run: yarn
+        run: npm ci
 
       - name: Generate
-        run: yarn build
+        run: npm run build:lib
 
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: dist
+      - name: Release
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_SECRET }}
