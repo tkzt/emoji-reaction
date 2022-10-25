@@ -64,7 +64,7 @@ createApp(App).use(EmojiReaction).mount('#app');
 Or a cdn-way to import:
 
 ```
-<script src="https://cdn.jsdelivr.net/npm/emoji-reaction@1.0.10/lib/index.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/emoji-reaction@latest/lib/index.min.js"></script>
 ```
 
 For details, check [this](https://github.com/boring-plans/boring-plans.github.io/blob/main/index.html) out.
