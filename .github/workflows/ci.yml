@@ -21,10 +21,10 @@ jobs:
           node-version: ${{ matrix.node }}
 
       - name: Install dependencies
-        run: npm ci
+        run: yarn
 
       - name: Generate
-        run: npm run build:lib
+        run: yarn build:lib
 
       - name: Release
         run: npm publish
