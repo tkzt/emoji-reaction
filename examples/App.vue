@@ -13,7 +13,7 @@
                     Excepturi ipsa labore soluta doloribus quod
                     molestiae incidunt reiciendis voluptatibus iste fuga.
                 </div>
-                <emoji-reaction
+                <EmojiReaction
                     :reactTo="'card-'+i"
                     :reactor="reactor"
                     lcAppId="ocLQI6JRaaujbK1uOEhqwMMy-MdYXbMMI"
@@ -23,7 +23,7 @@
         </div>
     </div>
     <div class="footer">
-        &copy; {{new Date().getFullYear()}} Allen Tao
+        &copy; {{new Date().getFullYear()}}&nbsp;<a href="https://github.com/boring-plans">Allen Tao</a>
     </div>
   </div>
 </template>
