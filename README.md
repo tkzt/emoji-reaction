@@ -80,9 +80,26 @@ import { EmojiReaction } from 'emoji-reaction';
 </script>
 ```
 
-<small>* emojis by default are ['👍', '👎', '😄', '🎉', '😕', '❤️', '🚀', '👀']"</small>
+<small>* emojis by default are ['👍', '👎', '😄', '🎉', '😕', '❤️', '🚀', '👀']</small>
 
-For details on the appointed function props, check [this](https://github.com/boring-plans/emoji-reaction/blob/main/examples/App.vue) out (Take LeanCloud as an example).
+Related definitions:
+
+```ts
+interface Reaction {
+  reaction: string;
+  reactors: string[];
+}
+
+export interface Props {
+  emojis?: string[];
+  reactor: string;
+  react: (reaction: string)=>Promise<unknown>;
+  unreact: (reaction: string)=>Promise<unknown>;
+  getReactions: ()=>Promise<Reaction[]>;
+}
+```
+
+For details, check [this](https://github.com/boring-plans/emoji-reaction/blob/main/examples/App.vue) out (Take LeanCloud as an example).
 
 What's more, we can register EmojiReaction globally:
 
