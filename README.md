@@ -9,9 +9,11 @@
 
 # Emoji Reaction
 
-`Emoji Reaction` is an emoji reaction component based on [Leancloud](https://www.leancloud.cn/) and [Vue3](https://vuejs.org/).
+`Emoji Reaction` is a [Vue3](https://vuejs.org/) based emoji reaction component.
 
-![App Screenshot](https://tkzt.cn/emoji-reaction/Snipaste_2022-07-15_14-42-05.png)
+<p align="center">
+    <img src="https://tkzt.cn/emoji-reaction/demo.gif" alt="Demo" />
+</p>
 
 
 # Demo
@@ -21,8 +23,7 @@
 
 ## Before Everything
 
-- A Vue3 project
-- A Leancloud App (For more, visit [here](https://github.com/boring-plans/boring-days#%E6%B3%A8%E5%86%8C))
+**A Vue3 project**
 ## Installation
 
 Install `Emoji Reaction` with npm:
@@ -33,6 +34,8 @@ npm install emoji-reaction
 
 
 ## Usage/Examples
+
+For version 1.x, we've got a built-in LeanCloud:
 
 ```html
 <template>
@@ -51,7 +54,37 @@ import { EmojiReaction } from 'emoji-reaction';
 </script>
 ```
 
-Or globally register:
+But due to some easy-to-use reasons, for 2.x, LeanCloud is not built-in any more. Giving three appointed function props is needed:
+
+
+```html
+<template>
+    <div class="card">
+        <EmojiReaction
+            :reactor="whom-to-react-to"
+            :react="(reaction)=>{
+                // request to react
+            }"
+            :unreact="(reaction)=>{
+                // request to cancel
+            }"
+            :getReactions="()=>{
+                // request reactions to a certain key
+                return []
+            }"
+        />
+    </div>
+</template>
+<script lang="ts" setup>
+import { EmojiReaction } from 'emoji-reaction';
+</script>
+```
+
+<small>* emojis by default are ['👍', '👎', '😄', '🎉', '😕', '❤️', '🚀', '👀']"</small>
+
+For details on the appointed function props, check [this](https://github.com/boring-plans/emoji-reaction/blob/main/examples/App.vue) out (Take LeanCloud as an example).
+
+What's more, we can register EmojiReaction globally:
 
 ```ts
 import { createApp } from 'vue';
@@ -61,14 +94,11 @@ import EmojiReaction from 'emoji-reaction';
 createApp(App).use(EmojiReaction).mount('#app');
 ```
 
-Or a cdn-way to import:
+And a cdn-way is also supported:
 
 ```
 <script src="https://cdn.jsdelivr.net/npm/emoji-reaction@latest/lib/index.min.js"></script>
 ```
-
-For details, check [this](https://github.com/boring-plans/boring-plans.github.io/blob/main/index.html) out.
-
 
 ## Customization
 

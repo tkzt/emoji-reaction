@@ -1,29 +1,29 @@
 <template>
   <div id="app">
     <div class="container">
-        <div class="col" v-for="i in 5" :key="i">
-            <div class="card">
-                <div class="card-title">
-                    Card {{i}}
-                </div>
-                <div class="card-description">
-                    Lorem ipsum dolor,
-                    sit amet consectetur adipisicing elit. Sequi repellat minus omnis illum,
-                    cum temporibus amet recusandae voluptatem?
-                    Excepturi ipsa labore soluta doloribus quod
-                    molestiae incidunt reiciendis voluptatibus iste fuga.
-                </div>
-                <EmojiReaction
-                    :reactTo="'card-'+i"
-                    :reactor="reactor"
-                    lcAppId="ocLQI6JRaaujbK1uOEhqwMMy-MdYXbMMI"
-                    lcAppKey="U65o7Va32y6dWshUhJHWrtUe"
-                />
-            </div>
-        </div>
+      <div class="col" v-for="i in 5" :key="i">
+          <div class="card">
+              <div class="card-title">
+                  Card {{i}}
+              </div>
+              <div class="card-description">
+                  Lorem ipsum dolor,
+                  sit amet consectetur adipisicing elit. Sequi repellat minus omnis illum,
+                  cum temporibus amet recusandae voluptatem?
+                  Excepturi ipsa labore soluta doloribus quod
+                  molestiae incidunt reiciendis voluptatibus iste fuga.
+              </div>
+              <EmojiReaction
+                  :reactor="reactor"
+                  :react="(reaction)=>react(reaction, 'card-'+i)"
+                  :unreact="(reaction)=>unreact(reaction, 'card-'+i)"
+                  :getReactions="()=>getReactions('card-'+i)"
+              />
+          </div>
+      </div>
     </div>
     <div class="footer">
-        &copy; {{new Date().getFullYear()}}&nbsp;<a href="https://github.com/boring-plans">Allen Tao</a>
+        &copy; {{2022+(2022===new Date().getFullYear()?'':'-Present')}}&nbsp;<a href="https://github.com/boring-plans">Allen Tao</a>
     </div>
   </div>
 </template>
@@ -31,9 +31,48 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { DeviceUUID } from 'device-uuid';
+import leancloud from 'leancloud-storage';
 import EmojiReaction from '~/EmojiReaction.vue';
 
 const reactor = ref(new DeviceUUID().get());
+if (!leancloud.applicationId) {
+  leancloud.init({
+    appId: 'ocLQI6JRaaujbK1uOEhqwMMy-MdYXbMMI',
+    appKey: 'U65o7Va32y6dWshUhJHWrtUe',
+  });
+}
+
+function react(reaction: string, reactTo: string) {
+  const reactionObj = new leancloud.Object('Reaction');
+  reactionObj.set('reaction', reaction);
+  reactionObj.set('reactor', reactor.value);
+  reactionObj.set('reactTo', reactTo);
+  return reactionObj.save();
+}
+
+function unreact(reaction: string, reactTo: string) {
+  const query = new leancloud.Query('Reaction');
+  return query.equalTo('reaction', reaction).equalTo('reactor', reactor.value).equalTo('reactTo', reactTo).destroyAll();
+}
+
+async function getReactions(reactTo: string) {
+  const query = new leancloud.Query('Reaction');
+  return query.equalTo('reactTo', reactTo).find().then((records) => records.reduce((pre: {reaction: string, reactors: string[]}[], curr) => {
+    const { reaction, reactor: _reactor } = curr.toJSON() as { reaction: string, reactor: string};
+    const existedReaction = pre.find((p) => p.reaction === reaction);
+    if (existedReaction) {
+      if (!existedReaction.reactors.includes(_reactor)) {
+        existedReaction.reactors.push(_reactor);
+      }
+    } else {
+      pre.push({
+        reaction,
+        reactors: [_reactor],
+      });
+    }
+    return pre;
+  }, []));
+}
 </script>
 
 <style>

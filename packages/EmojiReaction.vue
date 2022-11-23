@@ -66,21 +66,20 @@
 import {
   ref, onMounted, onBeforeUnmount, Ref,
 } from 'vue';
-import * as Leancloud from 'leancloud-storage';
-import { v4 as uuidv4 } from 'uuid';
+import { nanoid } from 'nanoid';
 import ProgressCircular from './ProgressCircular.vue';
-
-export interface Props {
-  emojis: string[];
-  reactTo: string;
-  reactor: string;
-  lcAppId: string;
-  lcAppKey: string;
-}
 
 interface Reaction {
   reaction: string;
   reactors: string[];
+}
+
+export interface Props {
+  emojis?: string[];
+  reactor: string;
+  react: (reaction: string)=>Promise<unknown>;
+  unreact: (reaction: string)=>Promise<unknown>;
+  getReactions: ()=>Promise<Reaction[]>;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -89,13 +88,10 @@ const props = withDefaults(defineProps<Props>(), {
   emojis: () => ['👍', '👎', '😄', '🎉', '😕', '❤️', '🚀', '👀'],
 });
 
-const emit = defineEmits<{(event: 'failed', message: string): void;
-}>();
-
 const loading: Ref<string[]> = ref([]);
 const reactions: Ref<Reaction[]> = ref([]);
 const popUp = ref(false);
-const containerId = ref(`er-${uuidv4()}`);
+const containerId = ref(`er-${nanoid()}`);
 const POPUP_PREFIX = 'popup-';
 
 function formatSum(sum: number) {
@@ -131,25 +127,8 @@ function clickOutside(ev: MouseEvent) {
 
 async function getReactions() {
   loading.value.push('all');
-  const query = new Leancloud.Query('Reaction');
-  reactions.value = (await query.equalTo('reactTo', props.reactTo).find()).reduce(
-    (pre: Reaction[], curr) => {
-      const { reaction, reactor } = curr.toJSON() as { reaction: string; reactor: string };
-      const existedReaction = pre.find((p) => p.reaction === reaction);
-      if (existedReaction) {
-        if (!existedReaction.reactors.includes(reactor)) {
-          existedReaction.reactors.push(reactor);
-        }
-      } else {
-        pre.push({
-          reaction,
-          reactors: [reactor],
-        });
-      }
-
-      return pre;
-    },
-    [],
+  reactions.value = (await props.getReactions()).filter(
+    (r) => r.reaction && props.emojis.includes(r.reaction),
   );
   loading.value = loading.value.filter((l) => l !== 'all');
 }
@@ -178,50 +157,29 @@ function afterUnreact(reaction: string) {
 
 async function react(reaction: string) {
   if (!loading.value.includes(reaction)) {
-    try {
-      loading.value.push(reaction);
+    loading.value.push(reaction);
 
-      const pureReaction = reaction.replace(POPUP_PREFIX, '');
-      const reactionObj = new Leancloud.Object('Reaction');
-      reactionObj.set('reaction', pureReaction);
-      reactionObj.set('reactor', props.reactor);
-      reactionObj.set('reactTo', props.reactTo);
-      await reactionObj.save();
+    const pureReaction = reaction.replace(POPUP_PREFIX, '');
+    await props.react(pureReaction);
 
-      setTimeout(() => {
-        loading.value = loading.value.filter((l) => l !== reaction);
-        if (popUp.value) {
-          popUp.value = false;
-        }
-        afterReact(pureReaction);
-      }, 370);
-    } catch (err) {
-      const message = `Failed to react to ${props.reactTo}.\n${err}`;
-      console.error(message);
-      emit('failed', message);
-    }
+    setTimeout(() => {
+      loading.value = loading.value.filter((l) => l !== reaction);
+      if (popUp.value) {
+        popUp.value = false;
+      }
+      afterReact(pureReaction);
+    }, 370);
   }
 }
 
 async function unreact(reaction: string) {
   if (!loading.value.includes(reaction)) {
-    try {
-      const pureReaction = reaction.replace(POPUP_PREFIX, '');
-      afterUnreact(pureReaction);
-      const query = new Leancloud.Query('Reaction');
-      await query
-        .equalTo('reaction', pureReaction)
-        .equalTo('reactor', props.reactor)
-        .equalTo('reactTo', props.reactTo)
-        .destroyAll();
+    const pureReaction = reaction.replace(POPUP_PREFIX, '');
+    await props.unreact(pureReaction);
+    afterUnreact(pureReaction);
 
-      if (popUp.value) {
-        popUp.value = false;
-      }
-    } catch (err) {
-      const message = `Failed to unreact to ${props.reactTo}.\n${err}`;
-      console.error(message);
-      emit('failed', message);
+    if (popUp.value) {
+      popUp.value = false;
     }
   }
 }
@@ -231,13 +189,6 @@ function checkReacted(reaction: string) {
 }
 
 onMounted(() => {
-  if (!Leancloud.applicationId) {
-    Leancloud.init({
-      appId: props.lcAppId,
-      appKey: props.lcAppKey,
-    });
-  }
-
   getReactions();
   window.addEventListener('click', clickOutside);
 });
