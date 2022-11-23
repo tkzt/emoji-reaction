@@ -12,7 +12,7 @@
 `Emoji Reaction` is a [Vue3](https://vuejs.org/) based emoji reaction component.
 
 <p align="center">
-    <img src="https://tkzt.cn/emoji-reaction/demo.gif" alt="Demo" />
+    <img src="public/demo.gif" alt="Demo" />
 </p>
 
 
