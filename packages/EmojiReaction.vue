@@ -342,11 +342,54 @@ onBeforeUnmount(() => {
   80% { transform: scale(1.2); }
   0%, 100% { transform: scale(1) }
 }
+
+@media (prefers-color-scheme: dark) {
+  .er-trigger-icon:hover::after {
+    background-color: rgba(255, 255, 255, 0.17);
+  }
+
+  .er-reaction {
+    background-color: rgba(255, 255, 255, 0.17);
+  }
+
+  .er-reaction:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+
+  .er-reaction-sum {
+    color: rgba(255, 255, 255, 0.81);
+  }
+
+  .er-pop-up {
+    background-color: #343434;
+    box-shadow: rgba(255, 255, 255, 0.3) 2px 0 10px 2px;
+  }
+
+  .er-pop-up-item.reacted {
+    background-color: var(--er-primary);
+  }
+
+  .er-pop-up-item.reacted:hover {
+    background-color: var(--er-primary-dark);
+  }
+
+  .er-reaction.reacted {
+    background-color: var(--er-primary);
+  }
+
+  .er-reaction.reacted:hover {
+    background-color: var(--er-primary-dark);
+  }
+
+  .er-pop-up-item:hover {
+    background-color: rgba(255, 255, 255, 0.17);
+  }
+}
 </style>
 <style>
 :root {
-  --er-primary: #5e35b137;
-  --er-primary-light: #5e35b125;
-  --er-primary-dark: #5e35b1a6;
+  --er-primary: #c4b5fd;
+  --er-primary-light: #ddd6fe;
+  --er-primary-dark: #a78bfa;
 }
 </style>

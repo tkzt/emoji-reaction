@@ -22,9 +22,9 @@
           </div>
       </div>
     </div>
-    <div class="footer">
+    <footer>
         &copy; {{2022+(2022===new Date().getFullYear()?'':'-Present')}}&nbsp;<a href="https://github.com/boring-plans">Allen Tao</a>
-    </div>
+    </footer>
   </div>
 </template>
 
@@ -130,7 +130,7 @@ body {
     margin: 8px 0;
 }
 
-.footer {
+footer {
     position: fixed;
     bottom: 0;
     padding: 24px;
@@ -141,6 +141,11 @@ body {
     justify-content: center;
     font-size: xx-small;
     color: rgba(0, 0, 0, .6);
+}
+
+footer a {
+  color: #a78bfa;
+  text-decoration: unset;
 }
 
 @media screen and (min-width: 1400px) {
@@ -160,8 +165,31 @@ body {
       flex-basis: 100%;
     }
 
-    .footer {
+    footer {
         position: relative;
     }
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #272727;
+  }
+
+  .card {
+    background-color: black;
+  }
+
+  .card-title,
+  .card-description{
+    color: white;
+  }
+
+  footer {
+    color: white;
+  }
+
+  footer a:hover {
+    text-decoration: underline;
+  }
 }
 </style>

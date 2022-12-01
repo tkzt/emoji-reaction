@@ -121,8 +121,8 @@ And a cdn-way is also supported:
 
 ```css
 :root {
-    --er-primary: #5E35B137;
-    --er-primary-light: #5E35B125;
-    --er-primary-dark: #5E35B1a6;
+  --er-primary: #c4b5fd;
+  --er-primary-light: #ddd6fe;
+  --er-primary-dark: #a78bfa;
 }
 ```
