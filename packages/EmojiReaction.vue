@@ -69,7 +69,7 @@ import {
 import { nanoid } from 'nanoid';
 import ProgressCircular from './ProgressCircular.vue';
 
-interface Reaction {
+export interface Reaction {
   reaction: string;
   reactors: string[];
 }
