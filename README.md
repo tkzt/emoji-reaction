@@ -85,7 +85,7 @@ import { EmojiReaction } from 'emoji-reaction';
 Related definitions:
 
 ```ts
-interface Reaction {
+export interface Reaction {
   reaction: string;
   reactors: string[];
 }
