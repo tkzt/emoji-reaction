@@ -18,7 +18,7 @@
 
 # Demo
 
-[Here](https://tkzt.cn/emoji-reaction) is a demo.
+[Here](https://boring-plans.github.io/emoji-reaction/) is a demo.
 
 
 ## Before Everything
