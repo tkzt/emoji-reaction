@@ -1,6 +1,6 @@
 {
   "name": "emoji-reaction",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "A vue emoji reaction component",
   "main": "lib/index.js",
   "module": "lib/index.esm.js",
@@ -14,11 +14,12 @@
     "serve": "vue-cli-service serve",
     "lint": "vue-cli-service lint",
     "build": "vue-cli-service build",
-    "build:lib": "yarn build:clean && yarn build:rollup",
+    "build:lib": "pnpm build:clean && pnpm build:rollup",
     "build:clean": "rimraf lib/*",
     "build:rollup": "rollup -c"
   },
   "dependencies": {
+    "@vueuse/core": "^10.5.0",
     "nanoid": "^4.0.0"
   },
   "peerDependencies": {
@@ -34,7 +35,6 @@
     "@vue/cli-plugin-eslint": "~5.0.0",
     "@vue/cli-plugin-typescript": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
-    "@vue/eslint-config-airbnb": "^6.0.0",
     "@vue/eslint-config-typescript": "^9.1.0",
     "autoprefixer": "^10.4.7",
     "core-js": "^3.8.3",
@@ -44,6 +44,7 @@
     "eslint-plugin-vue": "^8.0.3",
     "eslint-plugin-vuejs-accessibility": "^1.1.0",
     "leancloud-storage": "^4.13.4",
+    "rimraf": "^5.0.5",
     "rollup": "^2.76.0",
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-terser": "^7.0.2",

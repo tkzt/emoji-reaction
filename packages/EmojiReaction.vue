@@ -1,39 +1,26 @@
 <template>
-  <div class="emoji-reaction" :id="containerId">
-    <div class="er-trigger-icon" @click="popUp = !popUp">
+  <div class="emoji-reaction" :id="containerId" :class="{ dark }">
+    <div class="er-trigger-icon" @click="popUp = !popUp" :class="{ 'hover-effect': isOutsidePopUp }">
       <progress-circular v-if="loading.includes('all')" />
       <svg viewBox="0 0 24 24" width="20" height="20" fill="#757575" v-else>
-        <path
-          d="M20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,
+        <path d="M20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,
           0 20,12M22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,
           2A10,10 0 0,1 22,12M10,9.5C10,10.3 9.3,11 8.5,11C7.7,11 7,10.3 7,
           9.5C7,8.7 7.7,8 8.5,8C9.3,8 10,8.7 10,9.5M17,9.5C17,10.3 16.3,11 15.5,
           11C14.7,11 14,10.3 14,9.5C14,8.7 14.7,8 15.5,8C16.3,8 17,8.7 17,9.5M12,
           17.23C10.25,17.23 8.71,16.5 7.81,15.42L9.23,14C9.68,14.72 10.75,15.23 12,
           15.23C13.25,15.23 14.32,14.72 14.77,14L16.19,15.42C15.29,16.5 13.75,17.23 12,
-          17.23Z"
-        />
+          17.23Z" />
       </svg>
-      <div class="er-pop-up" v-if="popUp">
+      <div class="er-pop-up" v-if="popUp" ref="popUpRef">
         <template v-for="(item, index) in emojis">
-          <div
-            class="er-pop-up-item reacted"
-            v-if="checkReacted(item)"
-            @click.stop="unreact(POPUP_PREFIX + item)"
-            :key="'reacted-' + index"
-          >
+          <div class="er-pop-up-item reacted" v-if="checkReacted(item)"
+            @click.stop="unreact(POPUP_PREFIX + item)" :key="'reacted-' + index">
             {{ item }}
           </div>
-          <div
-            class="er-pop-up-item"
-            v-else
-            @click.stop="react(POPUP_PREFIX + item)"
-            :key="index"
-          >
-            <span
-              class="er-pop-up-item-emoji"
-              :class="{ loading: loading.includes(POPUP_PREFIX + item) }"
-            >
+          <div class="er-pop-up-item" v-else @click.stop="react(POPUP_PREFIX + item)" :key="index">
+            <span class="er-pop-up-item-emoji"
+              :class="{ loading: loading.includes(POPUP_PREFIX + item) }">
               {{ item }}
             </span>
           </div>
@@ -42,12 +29,8 @@
     </div>
     <div class="er-reactions">
       <template v-for="({ reaction, reactors }, index) in reactions">
-        <div
-          :key="'reacted-' + index"
-          v-if="reactors.includes(reactor)"
-          class="er-reaction reacted"
-          @click="unreact(reaction)"
-        >
+        <div :key="'reacted-' + index" v-if="reactors.includes(reactor)" class="er-reaction reacted"
+          @click="unreact(reaction)">
           <span class="er-reaction-emoji">{{ reaction }}</span>
           <span class="er-reaction-sum">{{ formatSum(reactors.length) }}</span>
         </div>
@@ -68,18 +51,22 @@ import {
 } from 'vue';
 import { nanoid } from 'nanoid';
 import ProgressCircular from './ProgressCircular.vue';
+import { useMouseInElement } from "@vueuse/core";
 
+// eslint-disable-next-line vue/no-export-in-script-setup
 export interface Reaction {
   reaction: string;
   reactors: string[];
 }
 
+// eslint-disable-next-line vue/no-export-in-script-setup
 export interface Props {
-  emojis?: string[];
-  reactor: string;
-  react: (reaction: string)=>Promise<unknown>;
-  unreact: (reaction: string)=>Promise<unknown>;
-  getReactions: ()=>Promise<Reaction[]>;
+  emojis?: string[]
+  reactor: string
+  dark?: boolean
+  react: (reaction: string) => Promise<unknown>
+  unreact: (reaction: string) => Promise<unknown>
+  getReactions: () => Promise<Reaction[]>
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -92,7 +79,10 @@ const loading: Ref<string[]> = ref([]);
 const reactions: Ref<Reaction[]> = ref([]);
 const popUp = ref(false);
 const containerId = ref(`er-${nanoid()}`);
+const popUpRef = ref<HTMLElement>();
 const POPUP_PREFIX = 'popup-';
+
+const { isOutside: isOutsidePopUp } = useMouseInElement(popUpRef);
 
 function formatSum(sum: number) {
   const kSum = sum / 1000;
@@ -198,7 +188,46 @@ onBeforeUnmount(() => {
 });
 </script>
 
-<style scoped>
+<style>
+:root {
+  --er-primary: #c4b5fd;
+  --er-primary-light: #ddd6fe;
+  --er-primary-dark: #a78bfa;
+  --er-pop-up-item-hover-bg: rgba(0, 0, 0, .06);
+  --er-pop-up-shadow: rgba(0, 0, 0, .15);
+  --er-pop-up-bg: white;
+  --er-reaction-hover-bg: rgba(0, 0, 0, .09);
+  --er-reaction-active-bg: rgba(0, 0, 0, .12);
+  --er-reaction-sum-color: rgba(0, 0, 0, .81);
+  --er-reaction-reacted: var(--er-primary-light);
+  --er-reaction-reacted-active: var(--er-primary-dark);
+  --er-reaction-reacted-hover: var(--er-primary);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --er-pop-up-item-hover-bg: rgba(255, 255, 255, 0.17);
+    --er-pop-up-shadow: rgba(255, 255, 255, 0.3);
+    --er-pop-up-bg: #343434;
+    --er-reaction-hover-bg: rgba(255, 255, 255, 0.3);
+    --er-reaction-sum-color: rgba(255, 255, 255, 0.81);
+    --er-reaction-reacted: var(--er-primary);
+    --er-reaction-reacted-active: var(--er-primary-light);
+    --er-reaction-reacted-hover: var(--er-primary-dark);
+  }
+}
+
+.emoji-reaction.dark {
+  --er-pop-up-item-hover-bg: rgba(255, 255, 255, 0.17);
+  --er-pop-up-shadow: rgba(255, 255, 255, 0.3);
+  --er-pop-up-bg: #343434;
+  --er-reaction-hover-bg: rgba(255, 255, 255, 0.3);
+  --er-reaction-sum-color: rgba(255, 255, 255, 0.81);
+  --er-reaction-reacted: var(--er-primary-dark);
+  --er-reaction-reacted-active: var(--er-primary-light);
+  --er-reaction-reacted-hover: var(--er-primary);
+}
+
 .emoji-reaction {
   width: 100%;
   min-height: 28px;
@@ -228,8 +257,8 @@ onBeforeUnmount(() => {
   border-radius: 50%;
 }
 
-.er-trigger-icon:hover::after {
-  background-color: rgba(0, 0, 0, 0.06);
+.er-trigger-icon.hover-effect:hover::after {
+  background-color: var(--er-pop-up-item-hover-bg);
 }
 
 .er-reactions {
@@ -243,22 +272,30 @@ onBeforeUnmount(() => {
   align-items: center;
   justify-content: center;
   margin: 2px;
-  background-color: rgba(0, 0, 0, 0.06);
+  background-color: var(--er-pop-up-item-hover-bg);
   border-radius: 12px;
   padding: 0 8px 0 4px;
   cursor: pointer;
 }
 
 .er-reaction:hover {
-  background-color: rgba(0, 0, 0, 0.09);
+  background-color: var(--er-reaction-hover-bg);
+}
+
+.er-reaction:active {
+  background-color: var(--er-reaction-active-bg);
 }
 
 .er-reaction.reacted {
-  background-color: var(--er-primary-light);
+  background-color: var(--er-reaction-reacted);
 }
 
 .er-reaction.reacted:hover {
-  background-color: var(--er-primary);
+  background-color: var(--er-reaction-reacted-hover);
+}
+
+.er-reaction.reacted:active {
+  background-color: var(--er-reaction-reacted-active);
 }
 
 .er-reaction-emoji {
@@ -269,7 +306,7 @@ onBeforeUnmount(() => {
 .er-reaction-sum {
   margin-left: 2px;
   font-size: 12px;
-  color: rgba(0, 0, 0, 0.81);
+  color: var(--er-reaction-sum-color);
 }
 
 .er-pop-up {
@@ -279,9 +316,9 @@ onBeforeUnmount(() => {
   bottom: 26px;
   left: 0;
   padding: 4px;
-  background-color: white;
+  background-color: var(--er-pop-up-bg);
   border-radius: 8px;
-  box-shadow: rgba(0, 0, 0, 0.15) 0 0 10px;
+  box-shadow: var(--er-pop-up-shadow) 0 0 10px;
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -301,15 +338,15 @@ onBeforeUnmount(() => {
 }
 
 .er-pop-up-item:hover {
-  background-color: rgba(0, 0, 0, 0.06);
+  background-color: var(--er-pop-up-item-hover-bg);
 }
 
 .er-pop-up-item.reacted {
-  background-color: var(--er-primary-light);
+  background-color: var(--er-reaction-reacted);
 }
 
 .er-pop-up-item.reacted:hover {
-  background-color: var(--er-primary);
+  background-color: var(--er-reaction-reacted-hover);
 }
 
 .er-reaction-emoji.loading,
@@ -328,6 +365,7 @@ onBeforeUnmount(() => {
     height: 0;
     bottom: 20px;
   }
+
   to {
     width: fit-content;
     height: fit-content;
@@ -336,60 +374,32 @@ onBeforeUnmount(() => {
 }
 
 @keyframes bounce {
-  50% { transform: scale(1.2); }
-  60% { transform: scale(1.3); }
-  70% { transform: scale(.9); }
-  80% { transform: scale(1.2); }
-  0%, 100% { transform: scale(1) }
-}
-
-@media (prefers-color-scheme: dark) {
-  .er-trigger-icon:hover::after {
-    background-color: rgba(255, 255, 255, 0.17);
+  50% {
+    transform: scale(1.2);
   }
 
-  .er-reaction {
-    background-color: rgba(255, 255, 255, 0.17);
+  60% {
+    transform: scale(1.3);
   }
 
-  .er-reaction:hover {
-    background-color: rgba(255, 255, 255, 0.3);
+  70% {
+    transform: scale(.9);
   }
 
-  .er-reaction-sum {
-    color: rgba(255, 255, 255, 0.81);
+  80% {
+    transform: scale(1.2);
   }
 
-  .er-pop-up {
-    background-color: #343434;
-    box-shadow: rgba(255, 255, 255, 0.3) 2px 0 10px 2px;
-  }
-
-  .er-pop-up-item.reacted {
-    background-color: var(--er-primary);
-  }
-
-  .er-pop-up-item.reacted:hover {
-    background-color: var(--er-primary-dark);
-  }
-
-  .er-reaction.reacted {
-    background-color: var(--er-primary);
-  }
-
-  .er-reaction.reacted:hover {
-    background-color: var(--er-primary-dark);
-  }
-
-  .er-pop-up-item:hover {
-    background-color: rgba(255, 255, 255, 0.17);
+  0%,
+  100% {
+    transform: scale(1)
   }
 }
 </style>
 <style>
 :root {
-  --er-primary: #c4b5fd;
+  /* --er-primary: #c4b5fd;
   --er-primary-light: #ddd6fe;
-  --er-primary-dark: #a78bfa;
+  --er-primary-dark: #a78bfa; */
 }
 </style>

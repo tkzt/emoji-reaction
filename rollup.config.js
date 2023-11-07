@@ -24,8 +24,9 @@ export default [
         exports: 'named',
         globals: {
           vue: 'Vue',
-          'leancloud-storage': 'AV',
           uuid: 'uuid',
+          nanoid: 'nanoid',
+          '@vueuse/core': 'core'
         },
       },
     ],

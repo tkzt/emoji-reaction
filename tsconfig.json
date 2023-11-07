@@ -14,9 +14,7 @@
     "sourceMap": true,
     "outDir": "lib",
     "baseUrl": ".",
-    "types": [
-      "webpack-env"
-    ],
+    "types": [],
     "paths": {
       "~/*": [
         "packages/*"
@@ -34,9 +32,10 @@
     "examples/**/*.tsx",
     "examples/**/*.vue",
     "packages/**/*.ts",
-    "packages/**/*.tsx", 
-    "packages/**/*.vue", 
-    "typings/**/*.ts"  ],
+    "packages/**/*.tsx",
+    "packages/**/*.vue",
+    "typings/**/*.ts"
+  ],
   "exclude": [
     "node_modules"
   ]
