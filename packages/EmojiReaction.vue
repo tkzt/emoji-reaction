@@ -204,19 +204,6 @@ onBeforeUnmount(() => {
   --er-reaction-reacted-hover: var(--er-primary);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --er-pop-up-item-hover-bg: rgba(255, 255, 255, 0.17);
-    --er-pop-up-shadow: rgba(255, 255, 255, 0.3);
-    --er-pop-up-bg: #343434;
-    --er-reaction-hover-bg: rgba(255, 255, 255, 0.3);
-    --er-reaction-sum-color: rgba(255, 255, 255, 0.81);
-    --er-reaction-reacted: var(--er-primary);
-    --er-reaction-reacted-active: var(--er-primary-light);
-    --er-reaction-reacted-hover: var(--er-primary-dark);
-  }
-}
-
 .emoji-reaction.dark {
   --er-pop-up-item-hover-bg: rgba(255, 255, 255, 0.17);
   --er-pop-up-shadow: rgba(255, 255, 255, 0.3);
@@ -394,12 +381,5 @@ onBeforeUnmount(() => {
   100% {
     transform: scale(1)
   }
-}
-</style>
-<style>
-:root {
-  /* --er-primary: #c4b5fd;
-  --er-primary-light: #ddd6fe;
-  --er-primary-dark: #a78bfa; */
 }
 </style>

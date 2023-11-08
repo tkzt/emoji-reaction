@@ -92,15 +92,6 @@ async function getReactions(reactTo: string) {
   --footer-color: rgba(0, 0, 0, .6);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg-color: #272727;
-    --card-bg-color: black;
-    --card-color: white;
-    --footer-color: rgba(255, 255, 255, .5);
-  }
-}
-
 html.dark {
   --bg-color: #272727;
   --card-bg-color: black;
