@@ -92,6 +92,7 @@ export interface Reaction {
 export interface Props {
   emojis?: string[];
   reactor: string;
+  dark?: boolean;
   react: (reaction: string)=>Promise<unknown>;
   unreact: (reaction: string)=>Promise<unknown>;
   getReactions: ()=>Promise<Reaction[]>;
